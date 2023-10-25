@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "github-commit-painting"
+version = "0.1.0"
+description = "Create paintings on your Github commit history dashboard"
+authors = ["dasAtRagedy <66724994+dasAtRagedy@users.noreply.github.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
