@@ -38,6 +38,7 @@ def start_app():
     canvas = tk.Canvas(root, bg="white", height=canvas_height, width=canvas_width)
     canvas.pack()
 
+    # dirty monkey patching
     canvas.create_round_rectangle = lambda x1, y1, x2, y2, radius, **kwargs: round_rectangle(canvas, x1, y1, x2, y2, radius, **kwargs)
 
     draw_canvas(box_size, box_margin)
@@ -46,13 +47,13 @@ def start_app():
 
 def draw_canvas(box_size = 10, box_margin = 2):
     boxes = []
-
-    for i in range(53):
-        row = []
-        for j in range(7):
-            box = CommitBox(canvas, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
-            row.append(box)
-        boxes.append(row)
+    
+    for i in range(7):
+        col = []
+        for j in range(53):
+            box = CommitBox(canvas, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size+box_size, box_margin*(1+i)+i*box_size+box_size)
+            col.append(box)
+        boxes.append(col)
 
 def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
     points = [x1+radius, y1,
