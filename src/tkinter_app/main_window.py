@@ -47,13 +47,15 @@ def start_app():
 
 def draw_canvas(box_size = 10, box_margin = 2):
     boxes = []
-    
-    for i in range(7):
-        col = []
-        for j in range(53):
-            box = CommitBox(canvas, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size+box_size, box_margin*(1+i)+i*box_size+box_size)
-            col.append(box)
-        boxes.append(col)
+    current_day = 0
+
+    for i in range(53):
+        row = []
+        for j in range(7):
+            box = CommitBox(canvas, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
+            row.append(box)
+            current_day += 1
+        boxes.append(row)
 
 def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
     points = [x1+radius, y1,
