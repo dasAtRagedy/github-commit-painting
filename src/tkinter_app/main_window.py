@@ -1,7 +1,7 @@
 import tkinter as tk
 
 class CommitBox:
-    def __init__(self, canvas, x1, y1, x2, y2, initial_color="white"):
+    def __init__(self, canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, initial_color:str="white"):
         self.canvas = canvas
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
         self.color = initial_color
@@ -45,19 +45,25 @@ def start_app():
 
     root.mainloop()
 
-def draw_canvas(box_size = 10, box_margin = 2):
+def draw_canvas(box_size:int = 10, box_margin:int = 2):
     boxes = []
-    current_day = 0
+    current_box = 0
+    current_year = 2023
+    initial_box_offset = (get_initial_offset(current_year)+1)%7
+    days_in_year = 366 if is_leap_year(current_year) else 365
 
     for i in range(53):
         row = []
         for j in range(7):
-            box = CommitBox(canvas, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
-            row.append(box)
-            current_day += 1
+            if current_box + initial_box_offset >= days_in_year:
+                break
+            if current_box >= initial_box_offset:
+                box = CommitBox(canvas, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
+                row.append(box)
+            current_box += 1
         boxes.append(row)
 
-def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
+def round_rectangle(canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, radius:int=25, **kwargs) -> int:
     points = [x1+radius, y1,
               x1+radius, y1,
               x2-radius, y1,
@@ -80,3 +86,10 @@ def round_rectangle(canvas, x1, y1, x2, y2, radius=25, **kwargs):
               x1, y1]
 
     return canvas.create_polygon(points, **kwargs, smooth=True)
+
+def get_initial_offset(year:int) -> int:
+    from datetime import datetime
+    return datetime(year, 1, 1).weekday()
+
+def is_leap_year(year:int) -> bool:
+    return year%4 == 0 and (year % 400 == 0 or year % 100 != 0)
