@@ -27,7 +27,8 @@ class CommitBox:
 def start_app():
     global root
     root = tk.Tk()
-    root.title("My Tkinter App")
+    root.title("gitPaint.exe")
+    root['bg'] = '#0d1117'
     # root.geometry("800x300")
 
     global canvas
@@ -36,7 +37,7 @@ def start_app():
     canvas_height = 7*box_size + (7+1)*box_margin
     canvas_width = 53*box_size + (53+1)*box_margin
 
-    canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width)
+    canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width, highlightthickness=0)
     canvas.pack()
 
     # dirty monkey patching
@@ -46,7 +47,7 @@ def start_app():
 
     root.mainloop()
 
-def draw_canvas(box_size:int = 10, box_margin:int = 2):
+def draw_canvas(box_size:int = 10, box_margin:int = 2) -> list[str]:
     boxes = []
     current_box = 0
     current_year = 2023
@@ -63,6 +64,8 @@ def draw_canvas(box_size:int = 10, box_margin:int = 2):
                 row.append(box)
             current_box += 1
         boxes.append(row)
+
+    return boxes
 
 def round_rectangle(canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, radius:int=25, **kwargs) -> int:
     points = [x1+radius, y1,
