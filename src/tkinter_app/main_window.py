@@ -1,13 +1,16 @@
 import tkinter as tk
-import git_logic
+
+from .custom_components import round_rectangle, styled_button
+from .utils import ColorPalette, get_initial_offset, is_leap_year
+from .git_logic import main as git_main
 
 class CommitBox:
-    def __init__(self, canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, color_palette:list[str] = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]):
+    def __init__(self, canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int):
         self.canvas = canvas
         self.x1, self.y1, self.x2, self.y2 = x1, y1, x2, y2
-        self.color_palette = color_palette
+        self.color_palette = [color.value for color in ColorPalette]
         self.current_index = 0
-        self.rectangle = canvas.create_round_rectangle(x1, y1, x2, y2, radius=(int(abs(y2-y1)/2)), fill=self.color_palette[0])
+        self.rectangle = round_rectangle(canvas, x1, y1, x2, y2, radius=(int(abs(y2-y1)/2)), fill=self.color_palette[0])
         canvas.tag_bind(self.rectangle, "<Button-1>", self.left_click)
         # Different right click buttons for different systems
         canvas.tag_bind(self.rectangle, "<Button-2>", self.right_click)
@@ -42,11 +45,8 @@ def start_app():
     canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width, highlightthickness=0)
     canvas.pack(anchor='w')
 
-    # dirty monkey patching
-    canvas.create_round_rectangle = lambda x1, y1, x2, y2, radius, **kwargs: round_rectangle(canvas, x1, y1, x2, y2, radius, **kwargs)
-
     boxes = draw_canvas(box_size, box_margin)
-    generate_button = create_styled_button(root, "Hello!", lambda: print("Hello!"))
+    generate_button = styled_button(root, "Hello!", lambda: print("Hello!"))
     generate_button.pack(anchor='w')
 
     root.mainloop()
@@ -64,60 +64,11 @@ def draw_canvas(box_size:int = 10, box_margin:int = 2) -> list[str]:
             if current_box + initial_box_offset >= days_in_year:
                 break
             if current_box >= initial_box_offset:
-                box = CommitBox(canvas, box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
+                box = CommitBox(canvas, 
+                                box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, 
+                                box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
                 row.append(box)
             current_box += 1
         boxes.append(row)
 
     return boxes
-
-def round_rectangle(canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, radius:int=25, **kwargs) -> int:
-    points = [x1+radius, y1,
-              x1+radius, y1,
-              x2-radius, y1,
-              x2-radius, y1,
-              x2, y1,
-              x2, y1+radius,
-              x2, y1+radius,
-              x2, y2-radius,
-              x2, y2-radius,
-              x2, y2,
-              x2-radius, y2,
-              x2-radius, y2,
-              x1+radius, y2,
-              x1+radius, y2,
-              x1, y2,
-              x1, y2-radius,
-              x1, y2-radius,
-              x1, y1+radius,
-              x1, y1+radius,
-              x1, y1]
-
-    return canvas.create_polygon(points, **kwargs, smooth=True)
-
-def create_styled_button(root, text, command):
-    # Initialize the button with text, custom font, and command
-    button = tk.Button(root, text=text, command=command,
-                       bg='#4CAF50', fg='white', activebackground='#45a049')
-    
-    # Add hover effect
-    def on_hover(event):
-        button['bg'] = '#45a049'
-        
-    def on_leave(event):
-        button['bg'] = '#4CAF50'
-        
-    button.bind("<Enter>", on_hover)
-    button.bind("<Leave>", on_leave)
-    
-    return button
-
-def get_initial_offset(year:int) -> int:
-    from datetime import datetime
-    return datetime(year, 1, 1).weekday()
-
-def is_leap_year(year:int) -> bool:
-    return year%4 == 0 and (year % 400 == 0 or year % 100 != 0)
-
-def create_git_history(boxes: list[int]):
-    git_logic.main(boxes)

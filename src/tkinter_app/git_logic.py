@@ -1,7 +1,6 @@
 import subprocess
-import os
 
-def main():
+def main(commits:list[int], year:int):
     global env_vars
     env_vars = {
         'GIT_AUTHOR_NAME': 'Dont Carmen',
@@ -27,4 +26,4 @@ def main():
     # subprocess.run(["git", "push", "-u", "origin", "master"])
 
 if __name__=="__main__":
-    main()
+    main([], 2015)
