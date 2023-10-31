@@ -1,4 +1,5 @@
 import tkinter as tk
+import git_logic
 
 class CommitBox:
     def __init__(self, canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, color_palette:list[str] = ["#161b22", "#0e4429", "#006d32", "#26a641", "#39d353"]):
@@ -29,6 +30,7 @@ def start_app():
     root = tk.Tk()
     root.title("gitPaint.exe")
     root['bg'] = '#0d1117'
+    root.resizable(width=False, height=False)
     # root.geometry("800x300")
 
     global canvas
@@ -38,12 +40,14 @@ def start_app():
     canvas_width = 53*box_size + (53+1)*box_margin
 
     canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width, highlightthickness=0)
-    canvas.pack()
+    canvas.pack(anchor='w')
 
     # dirty monkey patching
     canvas.create_round_rectangle = lambda x1, y1, x2, y2, radius, **kwargs: round_rectangle(canvas, x1, y1, x2, y2, radius, **kwargs)
 
-    draw_canvas(box_size, box_margin)
+    boxes = draw_canvas(box_size, box_margin)
+    generate_button = create_styled_button(root, "Hello!", lambda: print("Hello!"))
+    generate_button.pack(anchor='w')
 
     root.mainloop()
 
@@ -91,9 +95,29 @@ def round_rectangle(canvas:tk.Canvas, x1:int, y1:int, x2:int, y2:int, radius:int
 
     return canvas.create_polygon(points, **kwargs, smooth=True)
 
+def create_styled_button(root, text, command):
+    # Initialize the button with text, custom font, and command
+    button = tk.Button(root, text=text, command=command,
+                       bg='#4CAF50', fg='white', activebackground='#45a049')
+    
+    # Add hover effect
+    def on_hover(event):
+        button['bg'] = '#45a049'
+        
+    def on_leave(event):
+        button['bg'] = '#4CAF50'
+        
+    button.bind("<Enter>", on_hover)
+    button.bind("<Leave>", on_leave)
+    
+    return button
+
 def get_initial_offset(year:int) -> int:
     from datetime import datetime
     return datetime(year, 1, 1).weekday()
 
 def is_leap_year(year:int) -> bool:
     return year%4 == 0 and (year % 400 == 0 or year % 100 != 0)
+
+def create_git_history(boxes: list[int]):
+    git_logic.main(boxes)
