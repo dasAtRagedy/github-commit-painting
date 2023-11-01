@@ -13,5 +13,5 @@ def get_initial_offset(year:int) -> int:
     return datetime(year, 1, 1).weekday()
 
 def is_leap_year(year:int) -> bool:
-    return year%4 == 0 and (year % 400 == 0 or year % 100 != 0)
+    return year % 4 == 0 and (year % 400 == 0 or year % 100 != 0)
 

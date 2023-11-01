@@ -59,10 +59,10 @@ def draw_canvas(*, box_size:int = 10, box_margin:int = 2, year:int) -> list[str]
     initial_box_offset = (get_initial_offset(year)+1)%7
     days_in_year = 366 if is_leap_year(year) else 365
 
-    for week in range(53):
+    for week in range(54):
         cols = []
         for day in range(7):
-            if current_box + initial_box_offset >= days_in_year:
+            if current_box - initial_box_offset >= days_in_year:
                 break
             if current_box >= initial_box_offset:
                 box = CommitBox(canvas, 
