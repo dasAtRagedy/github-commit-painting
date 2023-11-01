@@ -5,3 +5,6 @@
 
 # Environments
 venv/
+
+# Temporary Files
+**/temp_folder/
