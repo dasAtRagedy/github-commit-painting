@@ -45,28 +45,28 @@ def start_app():
     canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width, highlightthickness=0)
     canvas.pack(anchor='w')
 
-    boxes = draw_canvas(box_size, box_margin)
-    generate_button = styled_button(root, "Hello!", lambda: print("Hello!"))
+    year = 2015
+    boxes = draw_canvas(box_size=box_size, box_margin=box_margin, year=year)
+    generate_button = styled_button(root, "Hello!", git_main(boxes, year))
     generate_button.pack(anchor='w')
 
     root.mainloop()
 
-def draw_canvas(box_size:int = 10, box_margin:int = 2) -> list[str]:
+def draw_canvas(*, box_size:int = 10, box_margin:int = 2, year:int = 2015) -> list[str]:
     boxes = []
     current_box = 0
-    current_year = 2023
-    initial_box_offset = (get_initial_offset(current_year)+1)%7
-    days_in_year = 366 if is_leap_year(current_year) else 365
+    initial_box_offset = (get_initial_offset(year)+1)%7
+    days_in_year = 366 if is_leap_year(year) else 365
 
-    for i in range(53):
+    for week in range(53):
         row = []
-        for j in range(7):
+        for day in range(7):
             if current_box + initial_box_offset >= days_in_year:
                 break
             if current_box >= initial_box_offset:
                 box = CommitBox(canvas, 
-                                box_margin*(1+i)+i*box_size, box_margin*(1+j)+j*box_size, 
-                                box_margin*(1+i)+i*box_size+box_size, box_margin*(1+j)+j*box_size+box_size)
+                                box_margin*(1+week)+week*box_size, box_margin*(1+day)+day*box_size, 
+                                box_margin*(1+week)+week*box_size+box_size, box_margin*(1+day)+day*box_size+box_size)
                 row.append(box)
             current_box += 1
         boxes.append(row)

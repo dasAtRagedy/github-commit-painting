@@ -20,7 +20,9 @@ def main(commits:list[int], year:int):
     subprocess.run(['git', 'commit', 
                     '--date="2010-10-25 11:15:11"',
                     '--allow-empty',
-                    '-m', 'Commit number X'], cwd='./temp_folder', env=env_vars.update({'GIT_AUTHOR_DATE':'2010-10-25 11:15:11', 'GIT_COMMITTER_DATE':'2010-10-25 11:15:11'}))
+                    '-m', 'Commit number X'], 
+                    cwd='./temp_folder', 
+                    env=env_vars.update({'GIT_AUTHOR_DATE':'2010-10-25 11:15:11', 'GIT_COMMITTER_DATE':'2010-10-25 11:15:11'}))
     
     # subprocess.run(["git", "remote", "add", "origin", "example.com/example_repo.git"])
     # subprocess.run(["git", "push", "-u", "origin", "master"])
