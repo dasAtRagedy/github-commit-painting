@@ -11,6 +11,8 @@ def main(commits:list[int], year:int):
 
     subprocess.run(["rm", "-rf", "./temp_folder"])
     subprocess.run(["mkdir", "temp_folder"])
+    
+    all_dates = generate_dates(year = year, commits = commits)
 
     subprocess.run(["git", "init"], cwd='./temp_folder')
     subprocess.run(["touch", "README.md"], cwd='./temp_folder')
@@ -26,8 +28,7 @@ def main(commits:list[int], year:int):
                     cwd='./temp_folder', 
                     env=env_vars.update({'GIT_AUTHOR_DATE':'2010-10-25 11:15:11', 'GIT_COMMITTER_DATE':'2010-10-25 11:15:11'}))
     
-    all_dates = generate_dates(year = year, commits = commits)
-
+    # create_commits(all_dates=all_dates, env_vars=env_vars, cwd="./temp_folder")
     
     # subprocess.run(["git", "remote", "add", "origin", "example.com/example_repo.git"])
     # subprocess.run(["git", "push", "-u", "origin", "master"])
@@ -46,10 +47,18 @@ def generate_dates(*, year:int, commits:list[int]) -> list[datetime]:
             all_dates.append(current_date + timedelta(hours=uniform(5.0, 23.99)))
         current_date += delta
         box_index += 1
-    
-    print(type(current_date))
 
     return all_dates
+
+def create_commits(all_dates:list[datetime], *, env_vars:dict[str, str], cwd:str):
+    all_dates.sort()
+    for dt in all_dates:
+        subprocess.run(['git', 'commit',
+                    '--date="2010-10-25 11:15:11"',
+                    '--allow-empty',
+                    '-m', 'Commit number X'],
+                    cwd=cwd,
+                    env=env_vars.update({'GIT_AUTHOR_DATE':dt.strftime('%Y-%m-%d %H:%M:%S'), 'GIT_COMMITTER_DATE':dt.strftime('%Y-%m-%d %H:%M:%S')}))
 
 if __name__=="__main__":
     main([], 2015)
