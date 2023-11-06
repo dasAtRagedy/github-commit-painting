@@ -2,12 +2,16 @@ import subprocess
 from datetime import datetime, timedelta
 from random import uniform
 
-def main(commits:list[int], year:int):
+def main(commits:list[int], year:int, committer_email:str, committer_name:str):
     global env_vars
     env_vars = {
-        'GIT_AUTHOR_NAME': 'Dont Carmen',
-        'GIT_AUTHOR_EMAIL': 'dont@care.man'
+        'GIT_AUTHOR_EMAIL': 'dont@care.man' if not committer_email.strip() else committer_email.strip(),
+        'GIT_AUTHOR_NAME': 'Dont Carmen' if not committer_name.strip() else committer_name.strip()
     }
+
+    print(f"User email is {env_vars['GIT_AUTHOR_EMAIL']}")
+    print(f"User name is {env_vars['GIT_AUTHOR_NAME']}")
+    
 
     subprocess.run(["rm", "-rf", "./temp_folder"])
     subprocess.run(["mkdir", "temp_folder"])

@@ -13,6 +13,7 @@ if __name__ == "__main__":
     elif len(sys.argv) > 2:
         print(f"Expected parameter amount <= 1, provided {len(sys.argv)-1}; Terminating the application.")
         quit()
-    year = int(sys.argv[1])
+    elif len(sys.argv) == 2:
+        year = int(sys.argv[1])
     print(f"Year is {year}")
     main(year=year)

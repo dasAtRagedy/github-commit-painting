@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from .custom_components import round_rectangle, styled_button
+from .custom_components import EntryWithPlaceholder, round_rectangle, styled_button
 from .utils import ColorPalette, get_initial_offset, is_leap_year
 from .git_logic import main as git_main
 
@@ -48,8 +48,20 @@ def start_app(*, year:int):
     box_columns = draw_canvas(box_size=box_size, box_margin=box_margin, year=year)
     boxes = [box for column in box_columns for box in column]
 
-    generate_button = styled_button(root, "Hello!", lambda: git_main(commits=[box.current_index for box in boxes], year=year))
-    generate_button.pack(anchor='w')
+    frame_committer_email = tk.Frame(root)
+    label_committer_email = tk.Label(frame_committer_email, text="Committer Email:", bg="#0d1117", fg="white").pack(side=tk.LEFT)
+    entry_committer_email = tk.Entry(frame_committer_email)
+    entry_committer_email.pack()
+    frame_committer_email.pack(anchor='w')
+
+    frame_committer_name = tk.Frame(root)
+    label_committer_name = tk.Label(frame_committer_name, text="Committer Name:", bg="#0d1117", fg="white").pack(side=tk.LEFT)
+    entry_committer_name = tk.Entry(frame_committer_name)
+    entry_committer_name.pack()
+    frame_committer_name.pack(anchor='w')
+
+    button_generate = styled_button(root, "Hello!", lambda: git_main(commits=[box.current_index for box in boxes], year=year, committer_email=entry_committer_email.get(), committer_name=entry_committer_name.get()))
+    button_generate.pack(anchor='w')
 
     root.mainloop()
 
