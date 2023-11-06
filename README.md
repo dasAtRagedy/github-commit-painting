@@ -10,7 +10,7 @@ Whenever your github commit history feels bleak, use it to your advantage by tur
 
 ## Features
 
-Choose a year, commiter's name, committer's email, draw on a visual representation of a dashboard and click 'Create!' to make a repository full of commits.
+Choose a year, committer's name, committer's email, draw on a visual representation of a dashboard and click 'Create!' to make a repository full of commits.
 
 ## Prerequisites
 
