@@ -28,7 +28,7 @@ class CommitBox:
         self.canvas.itemconfig(self.rectangle, fill=self.color_palette[self.current_index])
     
 
-def start_app():
+def start_app(*, year:int):
     global root
     root = tk.Tk()
     root.title("gitPaint.exe")
@@ -45,9 +45,9 @@ def start_app():
     canvas = tk.Canvas(root, bg="#0d1117", height=canvas_height, width=canvas_width, highlightthickness=0)
     canvas.pack(anchor='w')
 
-    year = 2015
     box_columns = draw_canvas(box_size=box_size, box_margin=box_margin, year=year)
     boxes = [box for column in box_columns for box in column]
+
     generate_button = styled_button(root, "Hello!", lambda: git_main(commits=[box.current_index for box in boxes], year=year))
     generate_button.pack(anchor='w')
 
