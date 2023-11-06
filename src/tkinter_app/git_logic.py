@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from datetime import datetime, timedelta
 from random import uniform
 
@@ -10,7 +11,9 @@ def main(commits:list[int], year:int, committer_email:str, committer_name:str):
     }
 
     print(f"User email is {env_vars['GIT_AUTHOR_EMAIL']}")
+    sys.stdout.flush()
     print(f"User name is {env_vars['GIT_AUTHOR_NAME']}")
+    sys.stdout.flush()
     
 
     subprocess.run(["rm", "-rf", "./temp_folder"])
