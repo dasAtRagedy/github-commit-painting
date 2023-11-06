@@ -60,7 +60,7 @@ def start_app(*, year:int):
     entry_committer_name.pack()
     frame_committer_name.pack(anchor='w')
 
-    button_generate = styled_button(root, "Hello!", lambda: git_main(commits=[box.current_index for box in boxes], year=year, committer_email=entry_committer_email.get(), committer_name=entry_committer_name.get()))
+    button_generate = styled_button(root, "Create!", lambda: git_main(commits=[box.current_index for box in boxes], year=year, committer_email=entry_committer_email.get(), committer_name=entry_committer_name.get()))
     button_generate.pack(anchor='w')
 
     root.mainloop()
