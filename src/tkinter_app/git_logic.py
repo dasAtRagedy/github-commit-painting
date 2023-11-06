@@ -20,15 +20,7 @@ def main(commits:list[int], year:int):
 
     subprocess.run(['which', 'git'], cwd="./temp_folder")
     
-    # commit, one of many
-    subprocess.run(['git', 'commit', 
-                    '--date="2010-10-25 11:15:11"',
-                    '--allow-empty',
-                    '-m', 'Commit number X'], 
-                    cwd='./temp_folder', 
-                    env=env_vars.update({'GIT_AUTHOR_DATE':'2010-10-25 11:15:11', 'GIT_COMMITTER_DATE':'2010-10-25 11:15:11'}))
-    
-    # create_commits(all_dates=all_dates, env_vars=env_vars, cwd="./temp_folder")
+    create_commits(all_dates=all_dates, env_vars=env_vars, cwd="./temp_folder")
     
     # subprocess.run(["git", "remote", "add", "origin", "example.com/example_repo.git"])
     # subprocess.run(["git", "push", "-u", "origin", "master"])
@@ -54,7 +46,7 @@ def create_commits(all_dates:list[datetime], *, env_vars:dict[str, str], cwd:str
     all_dates.sort()
     for dt in all_dates:
         subprocess.run(['git', 'commit',
-                    '--date="2010-10-25 11:15:11"',
+                    f'--date="{dt.strftime("%Y-%m-%d %H:%M:%S")}"',
                     '--allow-empty',
                     '-m', 'Commit number X'],
                     cwd=cwd,
