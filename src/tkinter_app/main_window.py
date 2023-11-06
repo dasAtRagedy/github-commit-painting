@@ -1,6 +1,6 @@
 import tkinter as tk
 
-from .custom_components import EntryWithPlaceholder, round_rectangle, styled_button
+from .custom_components import round_rectangle, styled_button
 from .utils import ColorPalette, get_initial_offset, is_leap_year
 from .git_logic import main as git_main
 
